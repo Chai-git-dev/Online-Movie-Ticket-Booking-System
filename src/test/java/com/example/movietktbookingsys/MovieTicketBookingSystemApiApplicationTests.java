@@ -1,4 +1,4 @@
-package com.example.movietktbookingsyst;
+package com.example.movietktbookingsys;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
