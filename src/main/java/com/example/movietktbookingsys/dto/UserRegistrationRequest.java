@@ -16,18 +16,10 @@ public record UserRegistrationRequest(
         String userName,
         @Email (regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\\\.[a-z]{2,3}", message = "invalid email/duplicate Email ")
         String email,
-        String phNum,
-        String password,
         Enum userRole,
         long createdAt,
         long updatedAt,
-        LocalDate dateOfBirth,
         long phoneNumber) {
-        public UserRegistrationRequest() {
-
-        }
-//        public UserRegistrationRequest() {
-//        }
 
         public void setuserId(long userId) {
         }
@@ -38,16 +30,10 @@ public record UserRegistrationRequest(
         public void setemail(@Email String email) {
         }
 
-        public void setpassword(String password) {
-        }
-
         public void setuserRole(Enum userRole) {
         }
 
         public void setphoneNumber(long phoneNumber) {
-        }
-
-        public void setdateOfBirth(LocalDate dateOfBirth) {
         }
 
         public void setcreatedAt(long createdAt) {

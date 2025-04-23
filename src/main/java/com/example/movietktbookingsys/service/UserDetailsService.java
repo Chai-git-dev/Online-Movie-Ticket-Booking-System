@@ -14,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static com.example.movietktbookingsys.dao.UserDetails_dao.userDetailsRepo;
-
 @Service
 @AllArgsConstructor
 @Getter
@@ -29,23 +27,19 @@ public class UserDetailsService {
     @Autowired
     private UserRegistrationRequest userRegistrationRequest;
 
-    public <T> ResponseEntity<UserRegistrationRequest> saveUserDetails(UserDetails user) {
-        UserRegistrationRequest response = new UserRegistrationRequest();
-        UserDetails userDetails1 = UserDetails_dao.saveUserDetails(user);
+    public ResponseEntity<ResponseStructure<UserRegistrationRequest>> saveUserDetails(UserDetails user) {
+        ResponseStructure<UserRegistrationRequest> response = new ResponseStructure<>();
         if (!userDetailsRepo.existsByEmail(user.getEmail())) {
             userRegistrationRequest.setuserId(user.getUserId());
             userRegistrationRequest.setuserName(user.getUserName());
             userRegistrationRequest.setemail(user.getEmail());
-            userRegistrationRequest.setpassword(user.getPassword());
             userRegistrationRequest.setuserRole(user.getUserRole());
             userRegistrationRequest.setphoneNumber(user.getPhoneNumber());
-            userRegistrationRequest.setdateOfBirth(user.getDateOfBirth());
             userRegistrationRequest.setcreatedAt(user.getCreatedAt());
             userRegistrationRequest.setupdatedAt(user.getUpdatedAt());
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            return new ResponseEntity<ResponseStructure<UserRegistrationRequest>>(response, HttpStatus.CREATED);
         }
         throw new DuplicateEmailException("Email already exists");
-
 
     }
 }
