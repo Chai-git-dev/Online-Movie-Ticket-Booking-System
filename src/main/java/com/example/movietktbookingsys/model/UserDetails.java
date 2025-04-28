@@ -1,12 +1,12 @@
 package com.example.movietktbookingsys.model;
 
+import com.example.movietktbookingsys.dto.UserRegistrationRequest;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -15,25 +15,38 @@ public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
-    @NotNull(message = "user name should not be null")
     private String userName;
     private String email;
     private String password;
-    private Enum userRole;
-    private long phoneNumber;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private String phoneNumber;
     private LocalDate dateOfBirth;
-    private long createdAt;
-    private long updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
+//    private Date deletedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_userId")
+    private User user;
 
-    @OneToMany(mappedBy = "userdetails")
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "theatreOwner_userId")
+    private TheatreOwner theatreOwner;
 
-    @OneToMany(mappedBy = "userdetails")
-    private List<TheatreOwner> theatreOwner;
+//    public long setUserId(UUID uuid) {
+//        long userId = uuid.getMostSignificantBits();
+//        this.userId = userId;
+//        return userId;
+//    }
 
-    public UserDetails(String email) {
-        this.email = email;
+    public UserRegistrationRequest UserRegistrationRequest(long userId, String userName, String email, String phoneNumber, UserRole userRole, long createdAt, long updatedAt) {
+        UserRegistrationRequest UserRegistrationRequest = new UserRegistrationRequest();
+        return UserRegistrationRequest;
     }
 
+    public enum UserRole{
+        USER,
+        THEATRE_OWNER
+    }
 }

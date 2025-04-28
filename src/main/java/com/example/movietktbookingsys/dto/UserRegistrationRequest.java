@@ -1,44 +1,32 @@
 package com.example.movietktbookingsys.dto;
 
-import com.example.movietktbookingsys.service.UserDetailsService;
-import jakarta.persistence.OneToOne;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.lang.Contract;
+import com.example.movietktbookingsys.model.UserDetails;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-public record UserRegistrationRequest(
-        String userName,
-        @Email (regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\\\.[a-z]{2,3}", message = "invalid email/duplicate Email ")
-        String email,
-        Enum userRole,
-        long createdAt,
-        long updatedAt,
-        long phoneNumber) {
+@Getter
+@Setter
+public class UserRegistrationRequest {
+        @NotNull(message = "User name cannot be null")
+        @NotBlank(message = "User name cannot be blank")
+        @Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+        private String userName;
 
-        public void setuserId(long userId) {
-        }
+        @Min(6000000000l)
+        @Max(9999999999l)
+        private String phoneNumber;
 
-        public void setuserName(@NotNull(message = "user name should not be null") String userName) {
-        }
+        @NotBlank(message = "Email cannot be blank")
+        @NotNull(message = "Email cannot be null")
+        @Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
+        private String email;
 
-        public void setemail(@Email String email) {
-        }
+        UserDetails.UserRole userRole;
 
-        public void setuserRole(Enum userRole) {
-        }
-
-        public void setphoneNumber(long phoneNumber) {
-        }
-
-        public void setcreatedAt(long createdAt) {
-        }
-
-        public void setupdatedAt(long updatedAt) {
-        }
+        LocalDate dateOfBirth;
 }
