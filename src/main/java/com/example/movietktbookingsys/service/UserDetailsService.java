@@ -1,18 +1,18 @@
 package com.example.movietktbookingsys.service;
 
-import com.example.movietktbookingsys.dao.UserDetails_dao;
-import com.example.movietktbookingsys.dto.UserRegistrationRequest;
 import com.example.movietktbookingsys.exception.handler.DuplicateEmailException;
+//import com.example.movietktbookingsys.exception.handler.ResourceNotFoundException;
 import com.example.movietktbookingsys.model.UserDetails;
 import com.example.movietktbookingsys.repository.UserDetailsRepo;
-import com.example.movietktbookingsys.util.ResponseStructure;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,37 +21,58 @@ import org.springframework.stereotype.Service;
 public class UserDetailsService {
     private final UserDetailsRepo userDetailsRepo;
 
+//    public ResponseEntity<UserRegistrationRequest> saveUserDetails(UserDetails userDetails) {
+//
+//        ResponseStructure<UserRegistrationRequest> response = new ResponseStructure<>();
+//        if (!userDetailsRepo.existsByEmail(userDetails.getEmail())) {
+//            UserRegistrationRequest userRegistrationDto = userDetails.UserRegistrationRequest(
 
-    @Autowired
-    private UserDetails_dao userDetails_dao;
-    @Autowired
-    private UserRegistrationRequest userRegistrationRequest;
+    /// /                    userDetails.setUserId(UUID.randomUUID()),
+    /// /                    userDetails.getUserName(),
+//                    userDetails.getEmail(),
+//                    userDetails.getPhoneNumber(),
+//                    userDetails.getUserRole(),
+//                    userDetails.getCreatedAt(),
+//                    userDetails.getUpdatedAt()
+//            );
+//            return new ResponseEntity<>(userRegistrationDto, HttpStatus.CREATED);
+//        }
+//        throw new DuplicateEmailException("Email already exists");
+//    }
 
-    public ResponseEntity<ResponseStructure<UserRegistrationRequest>> saveUserDetails(UserDetails user) {
-        ResponseStructure<UserRegistrationRequest> response = new ResponseStructure<>();
-        if (!userDetailsRepo.existsByEmail(user.getEmail())) {
-            userRegistrationRequest.setuserId(user.getUserId());
-            userRegistrationRequest.setuserName(user.getUserName());
-            userRegistrationRequest.setemail(user.getEmail());
-            userRegistrationRequest.setuserRole(user.getUserRole());
-            userRegistrationRequest.setphoneNumber(user.getPhoneNumber());
-            userRegistrationRequest.setcreatedAt(user.getCreatedAt());
-            userRegistrationRequest.setupdatedAt(user.getUpdatedAt());
-            return new ResponseEntity<ResponseStructure<UserRegistrationRequest>>(response, HttpStatus.CREATED);
+    public ResponseEntity<UserDetails> saveUser(UserDetails userDetails) {
+        if (!userDetailsRepo.existsByEmail(userDetails.getEmail())) {
+            userDetails.setCreatedAt(new Date());
+            userDetails.setUpdatedAt(new Date());
+            return new ResponseEntity<>(userDetailsRepo.save(userDetails), HttpStatus.CREATED);
         }
         throw new DuplicateEmailException("Email already exists");
-
     }
-}
 
-//    public UserDetails save(UserDetails userDetails) throws DuplicateEmailException {
-//        if(UserDetailsRepo.existsByEmail(userDetails.getEmail())) {
-//            throw new DuplicateEmailException("Email already exists: " +userDetails.getEmail());
+//    public UserDetails deleteUser(String email) {
+//        return userDetailsRepo.findByEmail(email)
+//                .map(userDetails -> {
+//                    userDetailsRepo.deleteUser(String email));
+//                return userDetails;
+//                })
+//                .orElse(null);
+//    }
+
+//    public ResponseEntity<UserDetails> deleteUser(UserDetails userDetails) {
+//        if(userDetailsRepo.existsByEmail(userDetails.getEmail())) {
+//            userDetails.setDeletedAt(new Date());
+//        return new ResponseEntity<>(userDetailsRepo.delete(userDetails), HttpStatus.)
 //        }
-//        if (userDetails.getUserId()) == null) {
-//            userDetails.setUserId(UUID.randomUUID());
-//        }
-//
-//        userDetails.getUserName()
-//                return;
+//    }
+
+//    public UserDetails deleteUser(String email) {
+//        return userDetailsRepo.findById(email)
+//                .map(customer -> {
+//                    userDetailsRepo.deleteUser(email);
+//                    return customer;
+//                })
+//                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + email));
+//    }
+
+}
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResponseBuilder {
-    public <T> ResponseEntity<ResponseStructure<T>> saveuserDetails(HttpStatus statusCode, String message, T data){
+    public <T> ResponseEntity<ResponseStructure> saveuserDetails(HttpStatus statusCode, String message, T data){
         return ResponseEntity.status(statusCode)
                 .body(ResponseStructure.<T>builder()
                         .status(statusCode.value())
@@ -20,7 +20,9 @@ public class ResponseBuilder {
                 .statusCode(statusCode.value())
                 .errorMessage(message)
                 .build());
+
     }
+
 
 }
 
