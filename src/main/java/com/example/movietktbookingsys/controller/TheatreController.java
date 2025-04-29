@@ -22,12 +22,14 @@ public class TheatreController {
         return theatreService.saveTheatre(userId, dto);
     }
 
+    @PreAuthorize("hasAuthority('THEATRE_OWNER'))
     @PutMapping
     public Theatre updateTheatre(@RequestParam String theaterId,
                                  @Valid @RequestBody TheatreDto dto) {
         return theatreService.updateTheatre(theaterId, dto);
     }
 
+    @PreAuthorize("hasAuthority('THEATRE_OWNER'))
     @DeleteMapping
     public Theatre deleteTheatre(@RequestParam String theaterId) {
         return theatreService.deleteTheatre(theaterId);
