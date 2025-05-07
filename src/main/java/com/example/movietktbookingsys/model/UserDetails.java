@@ -1,52 +1,45 @@
 package com.example.movietktbookingsys.model;
 
 import com.example.movietktbookingsys.dto.UserRegistrationRequest;
+import com.example.movietktbookingsys.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
+@ToString
+@Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners({AuditingEntityListener.class})
 public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
     private String userName;
+    @Column(unique = true, name = "email")
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private String phoneNumber;
     private LocalDate dateOfBirth;
-    private Date createdAt;
-    private Date updatedAt;
-//    private Date deletedAt;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+    private boolean isDelete;
+    private Instant deletedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "user_userId")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "theatreOwner_userId")
-    private TheatreOwner theatreOwner;
-
-//    public long setUserId(UUID uuid) {
-//        long userId = uuid.getMostSignificantBits();
-//        this.userId = userId;
-//        return userId;
-//    }
-
-    public UserRegistrationRequest UserRegistrationRequest(long userId, String userName, String email, String phoneNumber, UserRole userRole, long createdAt, long updatedAt) {
-        UserRegistrationRequest UserRegistrationRequest = new UserRegistrationRequest();
-        return UserRegistrationRequest;
-    }
-
-    public enum UserRole{
-        USER,
-        THEATRE_OWNER
-    }
 }

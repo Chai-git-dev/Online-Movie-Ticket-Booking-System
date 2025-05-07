@@ -3,34 +3,42 @@ package com.example.movietktbookingsys.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
-import java.beans.Customizer;
+
 
 @Configuration
-@Bean
-@MethodSecurity
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        //displaying csrf protection
-        http.csrf(csrf -> csrf.disable()); //if it shows exception - Make sure we add throws to the method signature 
-        
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        //specify public & private routes
-        http.authorizeHttpRequests(auth -> auth.requestMatches(HttpMethod.POST, "/register")
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(csrf -> csrf.disable());
+
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/register")
                 .permitAll()
-                .anyRequest().authenticated());
-        
-        //type of authentification to be done
-        http.formlogin((Customizer.withDefault());
-        
-        // return 
+                .anyRequest()
+                .authenticated());
+
+        http.formLogin(Customizer.withDefaults());
+
         return http.build();
 
-        //Declare a Bean method returning
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
     }
 }
+
+

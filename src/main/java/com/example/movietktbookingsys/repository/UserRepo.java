@@ -1,8 +1,12 @@
 package com.example.movietktbookingsys.repository;
 
-import com.example.movietktbookingsys.model.User;
+import com.example.movietktbookingsys.model.UserDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepo extends JpaRepository<User, String> {
+public interface UserRepo extends JpaRepository<UserDetails, String> {
+
+    boolean existsByEmail(String email);
+    UserDetails findByEmail(String email);
+
     }
 

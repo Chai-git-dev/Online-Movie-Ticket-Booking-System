@@ -2,11 +2,8 @@ package com.example.movietktbookingsys.controller;
 
 
 import com.example.movietktbookingsys.model.UserDetails;
-import com.example.movietktbookingsys.service.UserDetailsService;
-import com.example.movietktbookingsys.util.ResponseBuilder;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

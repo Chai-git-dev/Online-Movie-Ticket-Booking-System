@@ -1,32 +1,36 @@
 package com.example.movietktbookingsys.dto;
 
-import com.example.movietktbookingsys.model.UserDetails;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.example.movietktbookingsys.enums.UserRole;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-public class UserRegistrationRequest {
+public record UserRegistrationRequest (
         @NotNull(message = "User name cannot be null")
         @NotBlank(message = "User name cannot be blank")
         @Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
-        private String userName;
+         String userName,
 
         @Min(6000000000l)
         @Max(9999999999l)
-        private String phoneNumber;
+         String phoneNumber,
 
         @NotBlank(message = "Email cannot be blank")
         @NotNull(message = "Email cannot be null")
         @Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
-        private String email;
+         String email,
 
-        UserDetails.UserRole userRole;
+        @NotNull
+        @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,20}$",
+                message = "Password should be minimum of 8 characters and should have atleast one uppercase and lowercase alphabet, atleast one special character")
+        String password,
 
-        LocalDate dateOfBirth;
-}
+
+       @NotNull
+       UserRole userRole,
+
+        @NotNull
+        @Past(message = "Date of birth must be a past date")
+        LocalDate dateOfBirth
+        ) {}
+
